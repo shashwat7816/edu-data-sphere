@@ -1,4 +1,5 @@
 
+
 -- Update university_staff table description and comments
 ALTER TABLE university_staff MODIFY COLUMN designation VARCHAR(100) COMMENT 'Government Staff Designation';
 
@@ -32,3 +33,25 @@ ALTER TABLE documents
 ADD COLUMN IF NOT EXISTS approval_status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
 ADD COLUMN IF NOT EXISTS approval_date TIMESTAMP NULL,
 ADD COLUMN IF NOT EXISTS approved_by INT NULL;
+
+-- Create data_export_logs table to track exports
+CREATE TABLE IF NOT EXISTS data_export_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    export_type VARCHAR(50) NOT NULL, -- 'students', 'departments', 'courses', 'programs'
+    export_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    records_exported INT NOT NULL,
+    filters TEXT, -- JSON formatted filters used
+    ip_address VARCHAR(45) NOT NULL
+) COMMENT = 'Tracks data exports by government staff';
+
+-- Create data_access_logs table to track data view access
+CREATE TABLE IF NOT EXISTS data_access_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    access_type VARCHAR(50) NOT NULL, -- 'view', 'export', 'report'
+    data_type VARCHAR(50) NOT NULL, -- 'students', 'departments', 'courses', etc
+    access_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    university_id INT NULL, -- If access is limited to a specific university
+    ip_address VARCHAR(45) NOT NULL
+) COMMENT = 'Tracks data access by users';

@@ -137,11 +137,11 @@ $notices = getUniversityNotices($conn, $university_id);
                 
                 <div class="hidden md:flex items-center space-x-4">
                     <a href="#" class="px-3 py-2 text-blue-600 font-medium">Dashboard</a>
+                    <a href="data_explorer.php" class="px-3 py-2 text-gray-600 hover:text-blue-600">Data Explorer</a>
                     <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Students</a>
                     <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Courses</a>
                     <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Departments</a>
                     <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Notices</a>
-                    <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Settings</a>
                     
                     <div class="relative ml-4">
                         <button id="userMenuButton" class="flex items-center focus:outline-none">
@@ -176,6 +176,7 @@ $notices = getUniversityNotices($conn, $university_id);
             <!-- Mobile Menu -->
             <div id="mobileMenu" class="md:hidden hidden pb-4">
                 <a href="#" class="block py-2 text-blue-600 font-medium">Dashboard</a>
+                <a href="data_explorer.php" class="block py-2 text-gray-600 hover:text-blue-600">Data Explorer</a>
                 <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Students</a>
                 <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Courses</a>
                 <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Departments</a>
@@ -208,8 +209,26 @@ $notices = getUniversityNotices($conn, $university_id);
             </div>
         </div>
         
-        <!-- Dashboard Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Updated Quick Links for Government Staff -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <!-- Data Explorer Card (New) -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center">
+                    <div class="rounded-full bg-indigo-100 p-3 mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold">Data Explorer</h3>
+                        <p class="text-gray-500 text-sm">Analyze educational data</p>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="data_explorer.php" class="text-sm text-blue-600 hover:text-blue-800">Access data explorer →</a>
+                </div>
+            </div>
+            
             <!-- Students Card -->
             <div class="bg-white rounded-lg shadow-md p-6">
                 <div class="flex items-center">
@@ -219,12 +238,12 @@ $notices = getUniversityNotices($conn, $university_id);
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-lg font-semibold">Total Students</h3>
+                        <h3 class="text-lg font-semibold">Students</h3>
                         <p class="text-3xl font-bold text-blue-600"><?php echo $student_count; ?></p>
                     </div>
                 </div>
                 <div class="mt-4">
-                    <a href="#" class="text-sm text-blue-600 hover:text-blue-800">View all students →</a>
+                    <a href="data_explorer.php?data_type=students" class="text-sm text-blue-600 hover:text-blue-800">View student data →</a>
                 </div>
             </div>
             
@@ -242,7 +261,7 @@ $notices = getUniversityNotices($conn, $university_id);
                     </div>
                 </div>
                 <div class="mt-4">
-                    <a href="#" class="text-sm text-blue-600 hover:text-blue-800">Manage departments →</a>
+                    <a href="data_explorer.php?data_type=departments" class="text-sm text-blue-600 hover:text-blue-800">View department data →</a>
                 </div>
             </div>
             
@@ -262,7 +281,7 @@ $notices = getUniversityNotices($conn, $university_id);
                     </div>
                 </div>
                 <div class="mt-4">
-                    <a href="#" class="text-sm text-blue-600 hover:text-blue-800">Manage courses →</a>
+                    <a href="data_explorer.php?data_type=courses" class="text-sm text-blue-600 hover:text-blue-800">View course data →</a>
                 </div>
             </div>
         </div>
@@ -418,7 +437,7 @@ $notices = getUniversityNotices($conn, $university_id);
                 <?php else: ?>
                     <div class="text-center py-8 border border-dashed border-gray-300 rounded-md">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
                         <p class="text-gray-500 mb-2">No pending approvals</p>
                         <p class="text-gray-400 text-sm">All documents have been reviewed</p>

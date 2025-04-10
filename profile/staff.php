@@ -1,3 +1,4 @@
+
 <?php
 // Start session
 session_start();
@@ -145,6 +146,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                             <p class="text-gray-600"><?php echo htmlspecialchars($university["name"]); ?></p>
                         </div>
                     </div>
+
+                    <!-- Role Information Card -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                        <div class="flex items-start">
+                            <div class="rounded-full bg-blue-100 p-2 mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-blue-800">Your Role: Government Staff</h3>
+                                <p class="text-sm text-blue-700 mt-1">
+                                    As a government staff member, you have view-only access to educational data. Your role includes:
+                                </p>
+                                <ul class="text-sm text-blue-700 list-disc ml-5 mt-2">
+                                    <li>Accessing and analyzing student, department, and course data</li>
+                                    <li>Downloading reports for government use</li>
+                                    <li>Publishing notices and announcements</li>
+                                    <li>Reviewing and approving student documents</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-sm">
+                            <a href="../dashboard/data_explorer.php" class="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                                Access Data Explorer
+                            </a>
+                        </div>
+                    </div>
                     
                     <!-- Profile Update Form -->
                     <div class="mb-8">
@@ -223,6 +255,114 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                 </div>
             </div>
             
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <!-- Recent Activity -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-4">Recent Activity</h3>
+                        <?php
+                        // Get recent login activity
+                        $logs_sql = "SELECT login_time, ip_address FROM login_logs 
+                                     WHERE user_id = ? AND role = 'staff' 
+                                     ORDER BY login_time DESC LIMIT 5";
+                        $logs_stmt = $conn->prepare($logs_sql);
+                        $logs_stmt->bind_param("i", $_SESSION["user_id"]);
+                        $logs_stmt->execute();
+                        $logs_result = $logs_stmt->get_result();
+                        
+                        if ($logs_result->num_rows > 0) {
+                            echo '<ul class="divide-y divide-gray-200">';
+                            while ($log = $logs_result->fetch_assoc()) {
+                                echo '<li class="py-3 flex items-center">';
+                                echo '<div class="bg-gray-100 rounded-full p-2 mr-3">';
+                                echo '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                                echo '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />';
+                                echo '</svg>';
+                                echo '</div>';
+                                echo '<div>';
+                                echo '<p class="text-sm font-medium">Account Login</p>';
+                                echo '<p class="text-xs text-gray-500">'.date("F j, Y, g:i a", strtotime($log["login_time"])).'</p>';
+                                echo '<p class="text-xs text-gray-500">IP: '.htmlspecialchars($log["ip_address"]).'</p>';
+                                echo '</div>';
+                                echo '</li>';
+                            }
+                            echo '</ul>';
+                        } else {
+                            echo '<p class="text-gray-500 text-center py-4">No recent activity found</p>';
+                        }
+                        ?>
+                    </div>
+                </div>
+                
+                <!-- Data Access Stats -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-4">Data Access Permissions</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Student Data</span>
+                                    <span class="font-medium text-green-600">Read Access</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Department Data</span>
+                                    <span class="font-medium text-green-600">Read Access</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Course Data</span>
+                                    <span class="font-medium text-green-600">Read Access</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Student Records Modification</span>
+                                    <span class="font-medium text-red-600">No Access</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-red-100 h-2 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Document Approval</span>
+                                    <span class="font-medium text-green-600">Full Access</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Notice Publication</span>
+                                    <span class="font-medium text-green-600">Full Access</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="text-center">
                 <a href="../dashboard/staff.php" class="text-blue-600 hover:text-blue-800">
                     &larr; Back to Dashboard
@@ -238,3 +378,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
     </footer>
 </body>
 </html>
+
