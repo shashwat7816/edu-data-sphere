@@ -1,4 +1,3 @@
-
 <?php
 // Start session
 session_start();
@@ -44,15 +43,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
     $email = trim($_POST["email"]);
     $phone = trim($_POST["phone"]);
     $department = trim($_POST["department"]);
+    $designation = trim($_POST["designation"]);
     
     // Validate inputs
-    if (empty($name) || empty($email) || empty($phone) || empty($department)) {
+    if (empty($name) || empty($email) || empty($phone) || empty($department) || empty($designation)) {
         $update_message = '<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">All fields are required.</div>';
     } else {
         // Update staff profile
-        $update_sql = "UPDATE university_staff SET name = ?, email = ?, phone = ?, department = ? WHERE id = ?";
+        $update_sql = "UPDATE university_staff SET name = ?, email = ?, phone = ?, department = ?, designation = ? WHERE id = ?";
         $update_stmt = $conn->prepare($update_sql);
-        $update_stmt->bind_param("ssssi", $name, $email, $phone, $department, $staff_id);
+        $update_stmt->bind_param("sssssi", $name, $email, $phone, $department, $designation, $staff_id);
         
         if ($update_stmt->execute()) {
             $update_message = '<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4">Profile updated successfully!</div>';
@@ -109,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff Profile | EduDataSphere</title>
+    <title>Government Staff Profile | EduDataSphere</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../src/css/index.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -130,7 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
 
     <main class="container mx-auto px-4 py-8">
         <div class="max-w-4xl mx-auto">
-            <h1 class="text-3xl font-bold mb-6">Staff Profile</h1>
+            <h1 class="text-3xl font-bold mb-6">Government Staff Profile</h1>
             
             <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
                 <div class="p-6">
@@ -148,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                     
                     <!-- Profile Update Form -->
                     <div class="mb-8">
-                        <h3 class="text-xl font-semibold mb-4">Update Profile Information</h3>
+                        <h3 class="text-xl font-semibold mb-4">Update Government Staff Information</h3>
                         <?php echo $update_message; ?>
                         
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
@@ -174,6 +174,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["change_password"])) {
                                     <label for="department" class="block text-gray-700 text-sm font-bold mb-2">Department</label>
                                     <input type="text" id="department" name="department" value="<?php echo htmlspecialchars($staff["department"] ?? ''); ?>" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                                 </div>
+                            </div>
+                            
+                            <div>
+                                <label for="designation" class="block text-gray-700 text-sm font-bold mb-2">Government Staff Designation</label>
+                                <input type="text" id="designation" name="designation" value="<?php echo htmlspecialchars($staff["designation"] ?? ''); ?>" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                             </div>
                             
                             <div>

@@ -1,4 +1,3 @@
-
 <?php
 // Database connection
 require_once('../database/db_config.php');
@@ -85,25 +84,18 @@ if ($is_form_submit || $is_direct_execution) {
 
     $default_staff = [
         [
-            'name' => 'Delhi University Staff',
-            'email' => 'staff_delhi@edudatasphere.com',
-            'password' => 'staff123',
+            'name' => 'Delhi Government Education Staff',
+            'email' => 'govt_staff_delhi@edudatasphere.com',
+            'password' => 'govstaff123',
             'university_id' => 1,
-            'designation' => 'Registrar'
+            'designation' => 'Government Education Officer'
         ],
         [
-            'name' => 'Mumbai University Staff',
-            'email' => 'staff_mumbai@edudatasphere.com',
-            'password' => 'staff123',
+            'name' => 'Mumbai Government Education Staff',
+            'email' => 'govt_staff_mumbai@edudatasphere.com',
+            'password' => 'govstaff123',
             'university_id' => 2,
-            'designation' => 'Academic Coordinator'
-        ],
-        [
-            'name' => 'IIT Bombay Staff',
-            'email' => 'staff_iit@edudatasphere.com',
-            'password' => 'staff123',
-            'university_id' => 3,
-            'designation' => 'Department Head'
+            'designation' => 'Senior Government Educator'
         ]
     ];
 
@@ -248,7 +240,7 @@ if ($uni_result && $uni_result->num_rows > 0) {
                 
                 <!-- Staff Account Section -->
                 <div class="mb-8">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4 pb-2 border-b">Staff Account</h3>
+                    <h3 class="text-lg font-medium text-gray-800 mb-4 pb-2 border-b">Government Staff Account</h3>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -277,8 +269,8 @@ if ($uni_result && $uni_result->num_rows > 0) {
                         </div>
                         
                         <div>
-                            <label for="staff_designation" class="block text-sm font-medium text-gray-700 mb-1">Designation</label>
-                            <input type="text" id="staff_designation" name="staff_designation" value="University Staff" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <label for="staff_designation" class="block text-sm font-medium text-gray-700 mb-1">Government Staff Designation</label>
+                            <input type="text" id="staff_designation" name="staff_designation" value="Government Education Staff" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,3 @@
-
 <?php
 // Start session
 session_start();
@@ -116,7 +115,7 @@ while ($row = $notices_result->fetch_assoc()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff Dashboard | EduDataSphere</title>
+    <title>Government Staff Dashboard | EduDataSphere</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../src/css/index.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -196,12 +195,12 @@ while ($row = $notices_result->fetch_assoc()) {
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-2xl font-bold">Welcome, <?php echo $_SESSION["user_name"]; ?>!</h1>
-                    <p class="mt-1">University Staff at <?php echo $staff["university_name"]; ?></p>
+                    <p class="mt-1">Government Staff at <?php echo $staff["university_name"]; ?></p>
                 </div>
                 <div class="hidden md:block">
                     <div class="flex items-center bg-white/20 rounded-lg px-4 py-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                         <span><?php echo date("F j, Y"); ?></span>
                     </div>
