@@ -1,4 +1,3 @@
-
 <?php
 // Start session
 session_start();
@@ -11,6 +10,7 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] !== "admin") {
 
 // Database connection
 require_once('../database/db_config.php');
+require_once('../utils/dashboard_functions.php');
 
 // Get admin information
 $admin_id = $_SESSION["user_id"];
@@ -104,6 +104,9 @@ if ($recent_unis_result) {
         $recent_unis[] = $row;
     }
 }
+
+// Get system health metrics
+$system_health = getSystemHealth();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -196,7 +199,7 @@ if ($recent_unis_result) {
                     <div class="flex items-center space-x-2">
                         <button class="bg-white text-blue-800 px-4 py-2 rounded-md hover:bg-blue-100 transition flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                             </svg>
                             Export Reports
                         </button>
@@ -463,30 +466,30 @@ if ($recent_unis_result) {
                         <div>
                             <div class="flex justify-between mb-1">
                                 <span class="text-sm text-gray-500">Storage</span>
-                                <span class="text-sm font-medium">65%</span>
+                                <span class="text-sm font-medium"><?php echo $system_health['storage']; ?>%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-blue-600 h-2 rounded-full" style="width: 65%"></div>
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: <?php echo $system_health['storage']; ?>%"></div>
                             </div>
                         </div>
                         
                         <div>
                             <div class="flex justify-between mb-1">
                                 <span class="text-sm text-gray-500">CPU Usage</span>
-                                <span class="text-sm font-medium">25%</span>
+                                <span class="text-sm font-medium"><?php echo $system_health['cpu']; ?>%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-green-600 h-2 rounded-full" style="width: 25%"></div>
+                                <div class="bg-green-600 h-2 rounded-full" style="width: <?php echo $system_health['cpu']; ?>%"></div>
                             </div>
                         </div>
                         
                         <div>
                             <div class="flex justify-between mb-1">
                                 <span class="text-sm text-gray-500">Memory</span>
-                                <span class="text-sm font-medium">42%</span>
+                                <span class="text-sm font-medium"><?php echo $system_health['memory']; ?>%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-purple-600 h-2 rounded-full" style="width: 42%"></div>
+                                <div class="bg-purple-600 h-2 rounded-full" style="width: <?php echo $system_health['memory']; ?>%"></div>
                             </div>
                         </div>
                         
@@ -495,7 +498,7 @@ if ($recent_unis_result) {
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                All systems operational
+                                All systems <?php echo $system_health['status']; ?>
                             </span>
                             <a href="#" class="text-sm text-blue-600 hover:text-blue-800">Details</a>
                         </div>

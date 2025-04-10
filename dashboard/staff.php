@@ -10,6 +10,7 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] !== "staff") {
 
 // Database connection
 require_once('../database/db_config.php');
+require_once('../utils/dashboard_functions.php');
 
 // Get staff information
 $staff_id = $_SESSION["user_id"];
@@ -66,7 +67,7 @@ while ($row = $students_result->fetch_assoc()) {
 }
 
 // Get pending approvals
-$pending_sql = "SELECT s.id, s.name, s.email, d.id as document_id, d.title, d.document_type, d.upload_date
+$pending_sql = "SELECT s.id, s.name, s.email, d.id as document_id, d.title, d.document_type, d.upload_date, d.file_path
                 FROM documents d
                 JOIN students s ON d.student_id = s.id
                 WHERE s.university_id = ? AND d.approval_status = 'pending'
@@ -99,16 +100,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]) && isset($_P
     }
 }
 
-// Get university notices
-$notices_sql = "SELECT * FROM notices WHERE university_id = ? ORDER BY created_at DESC LIMIT 3";
-$notices_stmt = $conn->prepare($notices_sql);
-$notices_stmt->bind_param("i", $university_id);
-$notices_stmt->execute();
-$notices_result = $notices_stmt->get_result();
-$notices = [];
-while ($row = $notices_result->fetch_assoc()) {
-    $notices[] = $row;
+// Display notice added message if redirected after adding a notice
+if (isset($_GET['notice_added']) && $_GET['notice_added'] == '1') {
+    $action_message = "Notice has been published successfully!";
+} else if (isset($_GET['error']) && !empty($_GET['error'])) {
+    $action_error = $_GET['error'];
 }
+
+// Get university notices
+$notices = getUniversityNotices($conn, $university_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -348,7 +348,8 @@ while ($row = $notices_result->fetch_assoc()) {
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                         </svg>
-                        <p class="text-gray-500">No notices have been posted yet</p>
+                        <p class="text-gray-500 mb-2">No notices have been posted yet</p>
+                        <p class="text-gray-400 text-sm">All documents have been reviewed</p>
                     </div>
                 <?php endif; ?>
             </div>
