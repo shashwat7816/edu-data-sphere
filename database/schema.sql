@@ -1,10 +1,18 @@
 
-
 -- Update university_staff table description and comments
 ALTER TABLE university_staff MODIFY COLUMN designation VARCHAR(100) COMMENT 'Government Staff Designation';
 
 -- Update comment to reflect government staff context
 ALTER TABLE university_staff COMMENT = 'Government Staff Information for Educational Institutions';
+
+-- Make sure students table has university_id column
+ALTER TABLE students ADD COLUMN IF NOT EXISTS university_id INT;
+
+-- Make sure departments table has university_id column
+ALTER TABLE departments ADD COLUMN IF NOT EXISTS university_id INT;
+
+-- Make sure courses table has university_id column  
+ALTER TABLE courses ADD COLUMN IF NOT EXISTS university_id INT;
 
 -- Create notices table if not exists
 CREATE TABLE IF NOT EXISTS notices (
@@ -55,3 +63,13 @@ CREATE TABLE IF NOT EXISTS data_access_logs (
     university_id INT NULL, -- If access is limited to a specific university
     ip_address VARCHAR(45) NOT NULL
 ) COMMENT = 'Tracks data access by users';
+
+-- Add foreign keys to students, departments and courses tables if missing
+ALTER TABLE students 
+ADD FOREIGN KEY IF NOT EXISTS (university_id) REFERENCES universities(id) ON DELETE CASCADE;
+
+ALTER TABLE departments
+ADD FOREIGN KEY IF NOT EXISTS (university_id) REFERENCES universities(id) ON DELETE CASCADE;
+
+ALTER TABLE courses
+ADD FOREIGN KEY IF NOT EXISTS (university_id) REFERENCES universities(id) ON DELETE CASCADE;
