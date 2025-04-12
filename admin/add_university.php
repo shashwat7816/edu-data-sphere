@@ -25,8 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $description = trim($_POST["description"]);
     
     // Validate inputs
-    if (empty($name) || empty($location) || empty($established_year)) {
-        $error = "University name, location, and established year are required.";
+    if (empty($name) || empty($location)) {
+        $error = "University name and location are required.";
     } else {
         // Insert university into database
         $insert_sql = "INSERT INTO universities (name, location, website, established_year, description, created_at) 
@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
                 <div class="hidden md:flex items-center space-x-4">
                     <a href="../dashboard/admin.php" class="px-3 py-2 text-gray-600 hover:text-blue-600">Dashboard</a>
-                    <a href="#" class="px-3 py-2 text-blue-600 font-medium">Universities</a>
+                    <a href="universities.php" class="px-3 py-2 text-blue-600 font-medium">Universities</a>
                     <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Students</a>
                     <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Analytics</a>
                     <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Reports</a>
@@ -108,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <!-- Mobile Menu -->
             <div id="mobileMenu" class="md:hidden hidden pb-4">
                 <a href="../dashboard/admin.php" class="block py-2 text-gray-600 hover:text-blue-600">Dashboard</a>
-                <a href="#" class="block py-2 text-blue-600 font-medium">Universities</a>
+                <a href="universities.php" class="block py-2 text-blue-600 font-medium">Universities</a>
                 <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Students</a>
                 <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Analytics</a>
                 <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Reports</a>
@@ -125,11 +125,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="max-w-2xl mx-auto">
             <div class="flex items-center justify-between mb-6">
                 <h1 class="text-2xl font-bold">Add New University</h1>
-                <a href="../dashboard/admin.php" class="text-blue-600 hover:text-blue-800 flex items-center">
+                <a href="universities.php" class="text-blue-600 hover:text-blue-800 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
-                    Back to Dashboard
+                    Back to Universities
                 </a>
             </div>
             
@@ -163,8 +163,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     
                     <div class="mb-4">
-                        <label for="established_year" class="block text-gray-700 text-sm font-bold mb-2">Established Year *</label>
-                        <input type="number" id="established_year" name="established_year" min="1800" max="<?php echo date('Y'); ?>" value="<?php echo isset($established_year) ? htmlspecialchars($established_year) : ''; ?>" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <label for="established_year" class="block text-gray-700 text-sm font-bold mb-2">Established Year</label>
+                        <input type="text" id="established_year" name="established_year" value="<?php echo isset($established_year) ? htmlspecialchars($established_year) : ''; ?>" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     
                     <div class="mb-6">
@@ -176,7 +176,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
                             Add University
                         </button>
-                        <a href="../dashboard/admin.php" class="text-gray-600 hover:text-gray-800">Cancel</a>
+                        <a href="universities.php" class="text-gray-600 hover:text-gray-800">Cancel</a>
                     </div>
                 </form>
             </div>

@@ -21,7 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create_university"])) 
     $name = trim($_POST["name"]);
     $location = trim($_POST["location"]);
     $website = trim($_POST["website"]);
-    $accreditation = trim($_POST["accreditation"]);
+    $established_year = trim($_POST["established_year"]);
+    $description = trim($_POST["description"] ?? "");
+    $accreditation = trim($_POST["accreditation"] ?? "");
     
     // Validate inputs
     if (empty($name) || empty($location)) {
@@ -38,10 +40,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create_university"])) 
             $message = '<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">A university with this name already exists.</div>';
         } else {
             // Insert new university
-            $insert_sql = "INSERT INTO universities (name, location, website, accreditation, created_at) 
-                          VALUES (?, ?, ?, ?, NOW())";
+            $insert_sql = "INSERT INTO universities (name, location, website, established_year, description, accreditation, created_at) 
+                          VALUES (?, ?, ?, ?, ?, ?, NOW())";
             $insert_stmt = $conn->prepare($insert_sql);
-            $insert_stmt->bind_param("ssss", $name, $location, $website, $accreditation);
+            $insert_stmt->bind_param("ssssss", $name, $location, $website, $established_year, $description, $accreditation);
             
             if ($insert_stmt->execute()) {
                 $message = '<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4">University created successfully!</div>';
@@ -157,7 +159,7 @@ if ($uni_result && $uni_result->num_rows > 0) {
                                         Stats
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Accreditation
+                                        Established
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Actions
@@ -194,8 +196,13 @@ if ($uni_result && $uni_result->num_rows > 0) {
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-sm text-gray-900">
-                                                <?php echo htmlspecialchars($university["accreditation"] ?? 'Not specified'); ?>
+                                                <?php echo htmlspecialchars($university["established_year"] ?? 'Not specified'); ?>
                                             </div>
+                                            <?php if (!empty($university["accreditation"])): ?>
+                                                <div class="text-sm text-gray-600">
+                                                    <?php echo htmlspecialchars($university["accreditation"]); ?>
+                                                </div>
+                                            <?php endif; ?>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <a href="edit_university.php?id=<?php echo $university["id"]; ?>" class="text-blue-600 hover:text-blue-900 mr-3">
@@ -252,6 +259,18 @@ if ($uni_result && $uni_result->num_rows > 0) {
                     <label for="website" class="block text-gray-700 text-sm font-bold mb-2">Website URL</label>
                     <input type="url" id="website" name="website" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <p class="text-xs text-gray-500 mt-1">Optional. Please include http:// or https://</p>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="established_year" class="block text-gray-700 text-sm font-bold mb-2">Established Year</label>
+                    <input type="text" id="established_year" name="established_year" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <p class="text-xs text-gray-500 mt-1">Optional. Year when the university was established.</p>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+                    <textarea id="description" name="description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    <p class="text-xs text-gray-500 mt-1">Optional. Brief description of the university.</p>
                 </div>
                 
                 <div class="mb-6">

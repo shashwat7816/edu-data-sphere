@@ -5,6 +5,11 @@ ALTER TABLE university_staff MODIFY COLUMN designation VARCHAR(100) COMMENT 'Gov
 -- Update comment to reflect government staff context
 ALTER TABLE university_staff COMMENT = 'Government Staff Information for Educational Institutions';
 
+-- Add established_year column to universities table if not exists
+ALTER TABLE universities 
+ADD COLUMN IF NOT EXISTS established_year VARCHAR(10) COMMENT 'Year university was established',
+ADD COLUMN IF NOT EXISTS description TEXT COMMENT 'University description';
+
 -- Make sure students table has university_id column
 ALTER TABLE students ADD COLUMN IF NOT EXISTS university_id INT;
 
