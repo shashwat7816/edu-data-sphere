@@ -1,23 +1,135 @@
 
--- Update university_staff table description and comments
-ALTER TABLE university_staff MODIFY COLUMN designation VARCHAR(100) COMMENT 'Government Staff Designation';
+-- Create universities table if not exists
+CREATE TABLE IF NOT EXISTS universities (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    website VARCHAR(255),
+    established_year VARCHAR(10) COMMENT 'Year university was established',
+    description TEXT COMMENT 'University description',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) COMMENT = 'Universities registered in the system';
 
--- Update comment to reflect government staff context
-ALTER TABLE university_staff COMMENT = 'Government Staff Information for Educational Institutions';
+-- Create university_staff table if not exists
+CREATE TABLE IF NOT EXISTS university_staff (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    phone VARCHAR(20),
+    university_id INT NOT NULL,
+    designation VARCHAR(100) COMMENT 'Government Staff Designation',
+    department VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (university_id) REFERENCES universities(id) ON DELETE CASCADE
+) COMMENT = 'Government Staff Information for Educational Institutions';
 
--- Add established_year column to universities table if not exists
-ALTER TABLE universities 
-ADD COLUMN IF NOT EXISTS established_year VARCHAR(10) COMMENT 'Year university was established',
-ADD COLUMN IF NOT EXISTS description TEXT COMMENT 'University description';
+-- Create students table if not exists
+CREATE TABLE IF NOT EXISTS students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    registration_number VARCHAR(50),
+    university_id INT,
+    program_id INT,
+    department_id INT,
+    gender ENUM('male', 'female', 'other'),
+    date_of_birth DATE,
+    admission_date DATE,
+    status ENUM('active', 'inactive', 'graduated', 'withdrawn') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (university_id) REFERENCES universities(id) ON DELETE SET NULL
+) COMMENT = 'Students enrolled in universities';
 
--- Make sure students table has university_id column
-ALTER TABLE students ADD COLUMN IF NOT EXISTS university_id INT;
+-- Create departments table if not exists
+CREATE TABLE IF NOT EXISTS departments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    code VARCHAR(50),
+    university_id INT,
+    head_of_department VARCHAR(255),
+    established_date DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (university_id) REFERENCES universities(id) ON DELETE CASCADE
+) COMMENT = 'Academic departments in universities';
 
--- Make sure departments table has university_id column
-ALTER TABLE departments ADD COLUMN IF NOT EXISTS university_id INT;
+-- Create courses table if not exists
+CREATE TABLE IF NOT EXISTS courses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    code VARCHAR(50),
+    university_id INT,
+    department_id INT,
+    credit_hours INT,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (university_id) REFERENCES universities(id) ON DELETE CASCADE,
+    FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE
+) COMMENT = 'Courses offered by university departments';
 
--- Make sure courses table has university_id column  
-ALTER TABLE courses ADD COLUMN IF NOT EXISTS university_id INT;
+-- Create programs table if not exists
+CREATE TABLE IF NOT EXISTS programs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    code VARCHAR(50),
+    university_id INT,
+    department_id INT,
+    degree_level ENUM('certificate', 'diploma', 'associate', 'bachelor', 'master', 'doctoral') NOT NULL,
+    duration_years DECIMAL(3,1),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (university_id) REFERENCES universities(id) ON DELETE CASCADE,
+    FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE CASCADE
+) COMMENT = 'Academic programs offered by universities';
+
+-- Create scholarships table if not exists
+CREATE TABLE IF NOT EXISTS scholarships (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    university_id INT,
+    eligibility TEXT,
+    deadline DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (university_id) REFERENCES universities(id) ON DELETE SET NULL
+) COMMENT = 'Scholarships available for students';
+
+-- Create documents table if not exists
+CREATE TABLE IF NOT EXISTS documents (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    file_path VARCHAR(255) NOT NULL,
+    file_type VARCHAR(50),
+    file_size INT,
+    uploaded_by INT NOT NULL,
+    university_id INT,
+    approval_status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+    approval_date TIMESTAMP NULL,
+    approved_by INT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) COMMENT = 'Documents uploaded by users';
+
+-- Create users table if not exists
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'staff', 'student') NOT NULL,
+    university_id INT,
+    last_login TIMESTAMP NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (university_id) REFERENCES universities(id) ON DELETE SET NULL
+) COMMENT = 'System users with different access roles';
 
 -- Create notices table if not exists
 CREATE TABLE IF NOT EXISTS notices (
@@ -35,26 +147,20 @@ CREATE TABLE IF NOT EXISTS notices (
 CREATE TABLE IF NOT EXISTS login_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    role VARCHAR(20) NOT NULL, -- 'admin', 'staff', 'student'
+    role VARCHAR(20) NOT NULL,
     login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ip_address VARCHAR(45) NOT NULL,
     user_agent TEXT
 ) COMMENT = 'User login history';
 
--- Add approval_status to documents table if not exists
-ALTER TABLE documents 
-ADD COLUMN IF NOT EXISTS approval_status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
-ADD COLUMN IF NOT EXISTS approval_date TIMESTAMP NULL,
-ADD COLUMN IF NOT EXISTS approved_by INT NULL;
-
 -- Create data_export_logs table to track exports
 CREATE TABLE IF NOT EXISTS data_export_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    export_type VARCHAR(50) NOT NULL, -- 'students', 'departments', 'courses', 'programs'
+    export_type VARCHAR(50) NOT NULL,
     export_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     records_exported INT NOT NULL,
-    filters TEXT, -- JSON formatted filters used
+    filters TEXT,
     ip_address VARCHAR(45) NOT NULL
 ) COMMENT = 'Tracks data exports by government staff';
 
@@ -62,19 +168,9 @@ CREATE TABLE IF NOT EXISTS data_export_logs (
 CREATE TABLE IF NOT EXISTS data_access_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    access_type VARCHAR(50) NOT NULL, -- 'view', 'export', 'report'
-    data_type VARCHAR(50) NOT NULL, -- 'students', 'departments', 'courses', etc
+    access_type VARCHAR(50) NOT NULL,
+    data_type VARCHAR(50) NOT NULL,
     access_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    university_id INT NULL, -- If access is limited to a specific university
+    university_id INT NULL,
     ip_address VARCHAR(45) NOT NULL
 ) COMMENT = 'Tracks data access by users';
-
--- Add foreign keys to students, departments and courses tables if missing
-ALTER TABLE students 
-ADD FOREIGN KEY IF NOT EXISTS (university_id) REFERENCES universities(id) ON DELETE CASCADE;
-
-ALTER TABLE departments
-ADD FOREIGN KEY IF NOT EXISTS (university_id) REFERENCES universities(id) ON DELETE CASCADE;
-
-ALTER TABLE courses
-ADD FOREIGN KEY IF NOT EXISTS (university_id) REFERENCES universities(id) ON DELETE CASCADE;
