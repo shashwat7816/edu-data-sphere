@@ -1,3 +1,4 @@
+
 <?php
 // Start session
 session_start();
@@ -137,10 +138,10 @@ $notices = getUniversityNotices($conn, $university_id);
                 
                 <div class="hidden md:flex items-center space-x-4">
                     <a href="#" class="px-3 py-2 text-blue-600 font-medium">Dashboard</a>
-                    <a href="data_explorer.php" class="px-3 py-2 text-gray-600 hover:text-blue-600">Data Explorer</a>
-                    <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Students</a>
-                    <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Courses</a>
-                    <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Departments</a>
+                    <a href="../dashboard/data_explorer.php" class="px-3 py-2 text-gray-600 hover:text-blue-600">Data Explorer</a>
+                    <a href="../dashboard/data_explorer.php?data_type=students" class="px-3 py-2 text-gray-600 hover:text-blue-600">Students</a>
+                    <a href="../dashboard/data_explorer.php?data_type=courses" class="px-3 py-2 text-gray-600 hover:text-blue-600">Courses</a>
+                    <a href="../dashboard/data_explorer.php?data_type=departments" class="px-3 py-2 text-gray-600 hover:text-blue-600">Departments</a>
                     <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Notices</a>
                     
                     <div class="relative ml-4">
@@ -155,7 +156,7 @@ $notices = getUniversityNotices($conn, $university_id);
                         </button>
                         
                         <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
-                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="../profile/staff.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Your Profile</a>
                             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>
                             <div class="border-t border-gray-100"></div>
                             <a href="../auth/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Sign out</a>
@@ -176,13 +177,13 @@ $notices = getUniversityNotices($conn, $university_id);
             <!-- Mobile Menu -->
             <div id="mobileMenu" class="md:hidden hidden pb-4">
                 <a href="#" class="block py-2 text-blue-600 font-medium">Dashboard</a>
-                <a href="data_explorer.php" class="block py-2 text-gray-600 hover:text-blue-600">Data Explorer</a>
-                <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Students</a>
-                <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Courses</a>
-                <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Departments</a>
+                <a href="../dashboard/data_explorer.php" class="block py-2 text-gray-600 hover:text-blue-600">Data Explorer</a>
+                <a href="../dashboard/data_explorer.php?data_type=students" class="block py-2 text-gray-600 hover:text-blue-600">Students</a>
+                <a href="../dashboard/data_explorer.php?data_type=courses" class="block py-2 text-gray-600 hover:text-blue-600">Courses</a>
+                <a href="../dashboard/data_explorer.php?data_type=departments" class="block py-2 text-gray-600 hover:text-blue-600">Departments</a>
                 <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Notices</a>
-                <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Settings</a>
                 <div class="border-t border-gray-200 mt-2 pt-2">
+                    <a href="../profile/staff.php" class="block py-2 text-gray-600 hover:text-blue-600">Your Profile</a>
                     <a href="../auth/logout.php" class="block py-2 text-gray-600 hover:text-blue-600">Sign out</a>
                 </div>
             </div>
@@ -225,7 +226,7 @@ $notices = getUniversityNotices($conn, $university_id);
                     </div>
                 </div>
                 <div class="mt-4">
-                    <a href="data_explorer.php" class="text-sm text-blue-600 hover:text-blue-800">Access data explorer →</a>
+                    <a href="../dashboard/data_explorer.php" class="text-sm text-blue-600 hover:text-blue-800">Access data explorer →</a>
                 </div>
             </div>
             
@@ -243,7 +244,7 @@ $notices = getUniversityNotices($conn, $university_id);
                     </div>
                 </div>
                 <div class="mt-4">
-                    <a href="data_explorer.php?data_type=students" class="text-sm text-blue-600 hover:text-blue-800">View student data →</a>
+                    <a href="../dashboard/data_explorer.php?data_type=students" class="text-sm text-blue-600 hover:text-blue-800">View student data →</a>
                 </div>
             </div>
             
@@ -261,7 +262,7 @@ $notices = getUniversityNotices($conn, $university_id);
                     </div>
                 </div>
                 <div class="mt-4">
-                    <a href="data_explorer.php?data_type=departments" class="text-sm text-blue-600 hover:text-blue-800">View department data →</a>
+                    <a href="../dashboard/data_explorer.php?data_type=departments" class="text-sm text-blue-600 hover:text-blue-800">View department data →</a>
                 </div>
             </div>
             
@@ -281,7 +282,7 @@ $notices = getUniversityNotices($conn, $university_id);
                     </div>
                 </div>
                 <div class="mt-4">
-                    <a href="data_explorer.php?data_type=courses" class="text-sm text-blue-600 hover:text-blue-800">View course data →</a>
+                    <a href="../dashboard/data_explorer.php?data_type=courses" class="text-sm text-blue-600 hover:text-blue-800">View course data →</a>
                 </div>
             </div>
         </div>
@@ -312,7 +313,7 @@ $notices = getUniversityNotices($conn, $university_id);
                                         <td class="px-4 py-3"><?php echo $student["program_name"] ?? "Not assigned"; ?></td>
                                         <td class="px-4 py-3"><?php echo date("M j, Y", strtotime($student["created_at"])); ?></td>
                                         <td class="px-4 py-3">
-                                            <a href="#" class="text-blue-600 hover:text-blue-800">View</a>
+                                            <a href="../dashboard/data_explorer.php?data_type=students&student_id=<?php echo $student["id"]; ?>" class="text-blue-600 hover:text-blue-800">View</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -321,7 +322,7 @@ $notices = getUniversityNotices($conn, $university_id);
                     </div>
                     
                     <div class="mt-4 text-center">
-                        <a href="#" class="text-sm text-blue-600 hover:text-blue-800">View all students →</a>
+                        <a href="../dashboard/data_explorer.php?data_type=students" class="text-sm text-blue-600 hover:text-blue-800">View all students →</a>
                     </div>
                 <?php else: ?>
                     <div class="text-center py-8">
@@ -459,7 +460,7 @@ $notices = getUniversityNotices($conn, $university_id);
                 </button>
             </div>
             
-            <form action="add_notice.php" method="post">
+            <form action="../dashboard/add_notice.php" method="post">
                 <div class="mb-4">
                     <label for="notice_title" class="block text-gray-700 text-sm font-bold mb-2">Notice Title</label>
                     <input type="text" id="notice_title" name="notice_title" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
@@ -496,7 +497,7 @@ $notices = getUniversityNotices($conn, $university_id);
     <footer class="bg-white border-t mt-12 py-6">
         <div class="container mx-auto px-4">
             <div class="text-center text-gray-500 text-sm">
-                &copy; 2025 EduDataSphere. All rights reserved.
+                &copy; <?php echo date('Y'); ?> EduDataSphere. All rights reserved.
             </div>
         </div>
     </footer>

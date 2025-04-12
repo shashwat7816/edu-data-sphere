@@ -1,3 +1,4 @@
+
 <?php
 // Start session
 session_start();
@@ -138,7 +139,7 @@ $system_health = getSystemHealth();
                     <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Universities</a>
                     <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Students</a>
                     <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Analytics</a>
-                    <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Reports</a>
+                    <a href="../admin/generate_report.php" class="px-3 py-2 text-gray-600 hover:text-blue-600">Reports</a>
                     <a href="#" class="px-3 py-2 text-gray-600 hover:text-blue-600">Settings</a>
                     
                     <div class="relative ml-4">
@@ -153,7 +154,7 @@ $system_health = getSystemHealth();
                         </button>
                         
                         <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
-                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="../profile/admin.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Your Profile</a>
                             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>
                             <div class="border-t border-gray-100"></div>
                             <a href="../auth/logout.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Sign out</a>
@@ -177,9 +178,10 @@ $system_health = getSystemHealth();
                 <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Universities</a>
                 <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Students</a>
                 <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Analytics</a>
-                <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Reports</a>
+                <a href="../admin/generate_report.php" class="block py-2 text-gray-600 hover:text-blue-600">Reports</a>
                 <a href="#" class="block py-2 text-gray-600 hover:text-blue-600">Settings</a>
                 <div class="border-t border-gray-200 mt-2 pt-2">
+                    <a href="../profile/admin.php" class="block py-2 text-gray-600 hover:text-blue-600">Your Profile</a>
                     <a href="../auth/logout.php" class="block py-2 text-gray-600 hover:text-blue-600">Sign out</a>
                 </div>
             </div>
@@ -197,12 +199,12 @@ $system_health = getSystemHealth();
                 </div>
                 <div class="mt-4 md:mt-0">
                     <div class="flex items-center space-x-2">
-                        <button class="bg-white text-blue-800 px-4 py-2 rounded-md hover:bg-blue-100 transition flex items-center">
+                        <a href="../admin/generate_report.php" class="bg-white text-blue-800 px-4 py-2 rounded-md hover:bg-blue-100 transition flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                             </svg>
                             Export Reports
-                        </button>
+                        </a>
                         <button class="bg-blue-500 bg-opacity-40 text-white px-4 py-2 rounded-md hover:bg-opacity-60 transition">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -399,30 +401,30 @@ $system_health = getSystemHealth();
                 <div class="bg-white rounded-lg shadow-md p-6">
                     <h2 class="text-lg font-semibold mb-4">Quick Actions</h2>
                     <div class="grid grid-cols-2 gap-4">
-                        <button class="p-3 bg-blue-50 rounded-lg text-blue-700 hover:bg-blue-100 transition flex flex-col items-center justify-center">
+                        <a href="../admin/add_university.php" class="p-3 bg-blue-50 rounded-lg text-blue-700 hover:bg-blue-100 transition flex flex-col items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
                             <span class="text-sm">Add University</span>
-                        </button>
-                        <button class="p-3 bg-green-50 rounded-lg text-green-700 hover:bg-green-100 transition flex flex-col items-center justify-center">
+                        </a>
+                        <a href="../admin/add_staff.php" class="p-3 bg-green-50 rounded-lg text-green-700 hover:bg-green-100 transition flex flex-col items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                             </svg>
                             <span class="text-sm">Add Staff</span>
-                        </button>
-                        <button class="p-3 bg-purple-50 rounded-lg text-purple-700 hover:bg-purple-100 transition flex flex-col items-center justify-center">
+                        </a>
+                        <a href="../admin/add_scholarship.php" class="p-3 bg-purple-50 rounded-lg text-purple-700 hover:bg-purple-100 transition flex flex-col items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                             </svg>
                             <span class="text-sm">New Scholarship</span>
-                        </button>
-                        <button class="p-3 bg-yellow-50 rounded-lg text-yellow-700 hover:bg-yellow-100 transition flex flex-col items-center justify-center">
+                        </a>
+                        <a href="../admin/generate_report.php" class="p-3 bg-yellow-50 rounded-lg text-yellow-700 hover:bg-yellow-100 transition flex flex-col items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             <span class="text-sm">Generate Report</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
                 
@@ -512,7 +514,7 @@ $system_health = getSystemHealth();
     <footer class="bg-white border-t mt-12 py-6">
         <div class="container mx-auto px-4">
             <div class="text-center text-gray-500 text-sm">
-                &copy; 2025 EduDataSphere. All rights reserved.
+                &copy; <?php echo date('Y'); ?> EduDataSphere. All rights reserved.
             </div>
         </div>
     </footer>
