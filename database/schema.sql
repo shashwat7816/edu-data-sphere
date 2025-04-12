@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS universities (
     website VARCHAR(255),
     established_year VARCHAR(10) COMMENT 'Year university was established',
     description TEXT COMMENT 'University description',
+    accreditation VARCHAR(255) COMMENT 'University accreditation information',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) COMMENT = 'Universities registered in the system';

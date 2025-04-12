@@ -45,6 +45,34 @@ if ($check_db->num_rows == 0) {
     } else {
         die("Error creating database: " . $temp_conn->error);
     }
+} else {
+    // Database exists, but we need to ensure the schema is up-to-date
+    // Especially for columns like established_year which may be missing
+    $temp_conn->select_db($db_name);
+    
+    // Check if the universities table has the established_year column
+    $check_column = $temp_conn->query("SHOW COLUMNS FROM universities LIKE 'established_year'");
+    if ($check_column->num_rows == 0) {
+        // Column doesn't exist, add it
+        $temp_conn->query("ALTER TABLE universities ADD COLUMN established_year VARCHAR(10) COMMENT 'Year university was established' AFTER website");
+        error_log("Added established_year column to universities table.");
+    }
+    
+    // Check if the universities table has the description column
+    $check_column = $temp_conn->query("SHOW COLUMNS FROM universities LIKE 'description'");
+    if ($check_column->num_rows == 0) {
+        // Column doesn't exist, add it
+        $temp_conn->query("ALTER TABLE universities ADD COLUMN description TEXT COMMENT 'University description' AFTER established_year");
+        error_log("Added description column to universities table.");
+    }
+    
+    // Check if the universities table has the accreditation column
+    $check_column = $temp_conn->query("SHOW COLUMNS FROM universities LIKE 'accreditation'");
+    if ($check_column->num_rows == 0) {
+        // Column doesn't exist, add it
+        $temp_conn->query("ALTER TABLE universities ADD COLUMN accreditation VARCHAR(255) COMMENT 'University accreditation information' AFTER description");
+        error_log("Added accreditation column to universities table.");
+    }
 }
 
 // Close temporary connection
